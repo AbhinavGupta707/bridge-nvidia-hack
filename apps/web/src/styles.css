@@ -23,12 +23,16 @@ body {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
 }
 
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
 a:focus-visible {
   outline: 3px solid #2f6f96;
   outline-offset: 3px;
@@ -312,6 +316,59 @@ a:focus-visible {
   color: #4f5f59;
   font-size: 0.84rem;
   line-height: 1.45;
+}
+
+.manual-panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid #d4dcd7;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.manual-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(72px, 88px);
+  gap: 8px;
+}
+
+.manual-panel label {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.manual-panel label span {
+  color: #64716c;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.manual-panel select,
+.manual-panel input,
+.manual-panel textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #cbd6d0;
+  border-radius: 6px;
+  color: #1f2523;
+  background: #fbfcfa;
+}
+
+.manual-panel select,
+.manual-panel input {
+  min-height: 34px;
+  padding: 6px 8px;
+}
+
+.manual-panel textarea {
+  resize: vertical;
+  min-height: 58px;
+  padding: 8px;
+  line-height: 1.35;
 }
 
 .event-meter {

@@ -16,6 +16,8 @@ This repository is at deterministic demo integration stage. It contains:
 - shared event contracts for the four agents and session lifecycle
 - an agent-orchestrated demo event stream for `BRIDGE_MODE=demo`
 - a browser UI that consumes the event stream over WebSocket
+- a typed manual rehearsal path that runs Policy, Question, and Record agents
+  without live audio hardware
 - curated source registry placeholders
 
 `BRIDGE_MODE=demo` is the primary integration safety rail. Live audio, local
@@ -62,6 +64,15 @@ Record endpoints are generated from the same event log:
 ```bash
 curl http://localhost:8080/session/demo-001/record.json
 open http://localhost:8080/session/demo-001/record.html
+```
+
+Run a typed rehearsal without microphones or NVIDIA hardware:
+
+```bash
+curl -X POST http://localhost:8080/session/manual-001/manual_utterance \
+  -H 'Content-Type: application/json' \
+  -d '{"speaker":"resident","language":"en","text":"I am homeless tonight and need emergency accommodation.","resident_language":"bn"}'
+curl http://localhost:8080/session/manual-001/record.json
 ```
 
 Run the API locally:
@@ -132,6 +143,11 @@ curl http://localhost:8080/health
 curl http://localhost:8080/session/demo-001/events
 curl http://localhost:8080/session/demo-001/record.json
 ```
+
+Before the event hardware arrives, use
+[docs/pre-hardware-checklist.md](docs/pre-hardware-checklist.md) to complete
+all non-hardware work and keep tomorrow's pass focused on provider activation,
+local model residency, and latency proof.
 
 ## Repo Layout
 

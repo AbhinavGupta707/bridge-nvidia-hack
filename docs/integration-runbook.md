@@ -38,6 +38,18 @@ curl http://localhost:8080/session/demo-001/events
 curl http://localhost:8080/session/demo-001/record.json
 ```
 
+Typed manual rehearsal can be used before audio hardware is available:
+
+```bash
+curl -X POST http://localhost:8080/session/manual-001/manual_utterance \
+  -H 'Content-Type: application/json' \
+  -d '{"speaker":"resident","language":"en","text":"I am homeless tonight and need emergency accommodation.","resident_language":"bn"}'
+curl http://localhost:8080/session/manual-001/record.json
+```
+
+Use [pre-hardware-checklist.md](pre-hardware-checklist.md) when developing
+before the DGX Spark / ZGX Nano is available.
+
 ## Merge Gate
 
 Before merging a parallel branch, confirm:

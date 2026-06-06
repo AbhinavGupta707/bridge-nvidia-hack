@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from bridge.main import app
+from bridge.main import MANUAL_SESSIONS, app
 
 
 def test_health_reports_demo_mode_by_default(monkeypatch) -> None:
@@ -63,3 +63,56 @@ def test_session_websocket_streams_demo_events(monkeypatch) -> None:
     assert seen[0] == "session_started"
     assert "record_snapshot" in seen
     assert seen[-1] == "session_ended"
+
+
+def test_manual_utterance_runs_agents_and_updates_record() -> None:
+    MANUAL_SESSIONS.clear()
+    client = TestClient(app)
+
+    response = client.post(
+        "/session/manual-test/manual_utterance",
+        json={
+            "speaker": "resident",
+            "language": "en",
+            "text": "I am homeless tonight and need emergency accommodation.",
+            "resident_language": "bn",
+        },
+    )
+
+    assert response.status_code == 200
+    events = response.json()
+    event_types = [event["type"] for event in events]
+    assert event_types[0] == "session_started"
+    assert "final_utterance" in event_types
+    assert "policy_card" in event_types
+    assert "question_prompt" in event_types
+    assert "record_snapshot" in event_types
+
+    record_response = client.get("/session/manual-test/record.json")
+
+    assert record_response.status_code == 200
+    record = record_response.json()
+    assert record["session_id"] == "manual-test"
+    assert record["policy_citations"]
+    assert record["question_prompts"]
+    assert record["bilingual_transcript"][0]["speaker"] == "resident"
+
+
+def test_manual_caseworker_turn_extracts_commitment() -> None:
+    MANUAL_SESSIONS.clear()
+    client = TestClient(app)
+
+    response = client.post(
+        "/session/manual-commitment/manual_utterance",
+        json={
+            "speaker": "caseworker",
+            "language": "en",
+            "text": "I will call you today after checking the emergency accommodation options.",
+        },
+    )
+
+    assert response.status_code == 200
+    events = response.json()
+    commitment = next(event for event in events if event["type"] == "commitment")
+    assert commitment["owner"] == "caseworker"
+    assert commitment["due"] == "today"

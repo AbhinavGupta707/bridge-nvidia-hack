@@ -25,6 +25,7 @@ import type {
   PolicyCardEvent,
   QuestionPromptEvent,
   RecordSnapshotEvent,
+  Speaker,
   TranscriptTurn,
 } from "./types";
 
@@ -403,6 +404,16 @@ function endpointUrl(path: string | null | undefined, apiBaseUrl: string) {
   return `${apiBaseUrl}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
+function sessionIdFromWs(wsUrl: string) {
+  try {
+    const parsed = new URL(wsUrl, window.location.href);
+    const parts = parsed.pathname.split("/").filter(Boolean);
+    return parts[parts.length - 1] || "demo-001";
+  } catch {
+    return "demo-001";
+  }
+}
+
 function displayForPane(turn: FinalUtteranceEvent | PartialTranscriptEvent, pane: "resident" | "english") {
   if (pane === "resident") {
     return turn.speaker === "resident" ? turn.text : turn.translated_text ?? turn.text;
@@ -432,6 +443,13 @@ export function App() {
   );
   const [recordRevealed, setRecordRevealed] = useState(false);
   const apiBaseUrl = useMemo(() => httpBaseFromWs(apiWsUrl), []);
+  const apiSessionId = useMemo(() => sessionIdFromWs(apiWsUrl), []);
+  const manualSessionId = useMemo(() => `${apiSessionId}-manual`, [apiSessionId]);
+  const [manualSpeaker, setManualSpeaker] = useState<Extract<Speaker, "resident" | "caseworker">>("resident");
+  const [manualLanguage, setManualLanguage] = useState("en");
+  const [manualText, setManualText] = useState("");
+  const [manualTranslation, setManualTranslation] = useState("");
+  const [manualPending, setManualPending] = useState(false);
 
   const liveTurns = useMemo(() => {
     const partials = Object.values(state.partials).map((partial) => ({ ...partial, partial: true }));
@@ -537,6 +555,36 @@ export function App() {
     setRecording(true);
   };
 
+  const sendManualTurn = async () => {
+    const text = manualText.trim();
+    if (!text || manualPending) return;
+    setManualPending(true);
+    try {
+      const response = await fetch(`${apiBaseUrl}/session/${manualSessionId}/manual_utterance`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          speaker: manualSpeaker,
+          language: manualLanguage.trim() || (manualSpeaker === "resident" ? "bn" : "en"),
+          text,
+          translated_text: manualTranslation.trim() || null,
+          resident_language: "bn",
+        }),
+      });
+      if (!response.ok) throw new Error(`Manual utterance failed: ${response.status}`);
+      const events = (await response.json()) as BridgeEvent[];
+      events.forEach((event) => dispatch({ type: "event", event }));
+      setManualText("");
+      setManualTranslation("");
+      setStreamComplete(false);
+      setConnectionStatus("streaming");
+    } catch {
+      setConnectionStatus("error");
+    } finally {
+      setManualPending(false);
+    }
+  };
+
   const modeLabel = allowCloud ? "Cloud mode enabled" : "Local/offline mode";
   const modeDetail = allowCloud
     ? "ALLOW_CLOUD=true; cloud providers must be labelled during use."
@@ -616,6 +664,58 @@ export function App() {
           <div className="event-meter" aria-label="Backend event progress">
             <span>Backend WS events</span>
             <strong>{connectionStatus}: {state.eventCount}</strong>
+          </div>
+
+          <div className="manual-panel" aria-label="Manual typed rehearsal">
+            <div className="section-heading">
+              <Mic size={18} />
+              <h2>Manual Rehearsal</h2>
+            </div>
+            <div className="manual-grid">
+              <label>
+                <span>Speaker</span>
+                <select
+                  value={manualSpeaker}
+                  onChange={(event) => {
+                    const speaker = event.target.value as Extract<Speaker, "resident" | "caseworker">;
+                    setManualSpeaker(speaker);
+                    setManualLanguage(speaker === "resident" ? "bn" : "en");
+                  }}
+                >
+                  <option value="resident">Resident</option>
+                  <option value="caseworker">Caseworker</option>
+                </select>
+              </label>
+              <label>
+                <span>Language</span>
+                <input
+                  value={manualLanguage}
+                  onChange={(event) => setManualLanguage(event.target.value)}
+                  aria-label="Manual utterance language"
+                />
+              </label>
+            </div>
+            <textarea
+              value={manualText}
+              onChange={(event) => setManualText(event.target.value)}
+              placeholder="Type an utterance to run through Policy, Question, and Record agents."
+              rows={3}
+            />
+            <textarea
+              value={manualTranslation}
+              onChange={(event) => setManualTranslation(event.target.value)}
+              placeholder="Optional translation. Leave blank for same-language rehearsal."
+              rows={2}
+            />
+            <button
+              className="secondary-action"
+              type="button"
+              disabled={!manualText.trim() || manualPending}
+              onClick={sendManualTurn}
+            >
+              <Sparkles size={17} />
+              {manualPending ? "Running agents" : "Send typed turn"}
+            </button>
           </div>
         </aside>
 
