@@ -1,22 +1,217 @@
 {
   "session_id": "demo-001",
-  "scenario": "Housing options interview",
+  "scenario": "City of London housing options interview",
+  "mode": "demo",
   "resident_language": "bn",
+  "resident_language_label": "Bengali",
+  "caseworker_language": "en",
+  "duration_target_ms": 180000,
+  "participants": {
+    "resident": {
+      "display_name": "Resident",
+      "language": "bn",
+      "context": "Limited-English parent asked to leave a temporary sofa-surfing arrangement."
+    },
+    "caseworker": {
+      "display_name": "Housing options officer",
+      "language": "en",
+      "context": "Local authority housing appointment."
+    }
+  },
   "turns": [
     {
       "turn_id": "t-001",
       "speaker": "resident",
       "language": "bn",
-      "text": "Demo Bengali resident utterance placeholder.",
-      "translated_text": "I have been told to leave where I am staying and I do not know where I can sleep tonight."
+      "text": "আমাকে আজ রাতে যেখানে থাকছি সেখান থেকে বেরিয়ে যেতে বলা হয়েছে। আমি জানি না আজ রাতে কোথায় ঘুমাব।",
+      "partial_text": "আমাকে আজ রাতে যেখানে থাকছি সেখান থেকে বেরিয়ে যেতে বলা হয়েছে...",
+      "translated_text": "I have been told to leave where I am staying tonight. I do not know where I can sleep.",
+      "start_ms": 1200,
+      "end_ms": 7600,
+      "confidence": 0.96
     },
     {
       "turn_id": "t-002",
       "speaker": "caseworker",
       "language": "en",
-      "text": "I need to understand whether you are homeless or threatened with homelessness.",
-      "translated_text": "Demo Bengali translation placeholder."
+      "text": "I need to understand whether you are homeless or threatened with homelessness, and whether there is any risk tonight.",
+      "partial_text": "I need to understand whether you are homeless or threatened...",
+      "translated_text": "আপনি গৃহহীন বা গৃহহীন হওয়ার ঝুঁকিতে আছেন কি না এবং আজ রাতে কোনো ঝুঁকি আছে কি না, তা আমাকে বুঝতে হবে।",
+      "start_ms": 9000,
+      "end_ms": 14500,
+      "confidence": 0.98
+    },
+    {
+      "turn_id": "t-003",
+      "speaker": "resident",
+      "language": "bn",
+      "text": "আমার ছয় বছরের ছেলে আমার সঙ্গে আছে। আমার কোনো পরিবার নেই যেখানে আজ রাত থাকতে পারি।",
+      "partial_text": "আমার ছয় বছরের ছেলে আমার সঙ্গে আছে...",
+      "translated_text": "My six-year-old son is with me. I do not have family where we can stay tonight.",
+      "start_ms": 15600,
+      "end_ms": 21900,
+      "confidence": 0.95
+    },
+    {
+      "turn_id": "t-004",
+      "speaker": "caseworker",
+      "language": "en",
+      "text": "I will record that you have a child with you and that you need somewhere safe tonight. We will assess emergency accommodation now.",
+      "partial_text": "I will record that you have a child with you...",
+      "translated_text": "আমি নথিভুক্ত করছি যে আপনার সঙ্গে একটি শিশু আছে এবং আজ রাতে আপনার নিরাপদ থাকার জায়গা দরকার। আমরা এখন জরুরি আবাসনের বিষয়টি মূল্যায়ন করব।",
+      "start_ms": 23200,
+      "end_ms": 30100,
+      "confidence": 0.98
+    },
+    {
+      "turn_id": "t-005",
+      "speaker": "resident",
+      "language": "bn",
+      "text": "আমার পাসপোর্টের ছবি ফোনে আছে, কিন্তু জন্ম সনদ ব্যাগে নেই। আমি কি পরে পাঠাতে পারি?",
+      "partial_text": "আমার পাসপোর্টের ছবি ফোনে আছে...",
+      "translated_text": "I have a photo of my passport on my phone, but I do not have the birth certificate in my bag. Can I send it later?",
+      "start_ms": 42600,
+      "end_ms": 50800,
+      "confidence": 0.94
+    },
+    {
+      "turn_id": "t-006",
+      "speaker": "caseworker",
+      "language": "en",
+      "text": "Yes. Send what you have today. I will give you an email address and write down what evidence is still missing.",
+      "partial_text": "Yes. Send what you have today...",
+      "translated_text": "হ্যাঁ। আজ আপনার কাছে যা আছে পাঠান। আমি আপনাকে একটি ইমেইল ঠিকানা দেব এবং কোন প্রমাণ এখনও বাকি আছে তা লিখে দেব।",
+      "start_ms": 52800,
+      "end_ms": 60400,
+      "confidence": 0.98
+    },
+    {
+      "turn_id": "t-007",
+      "speaker": "resident",
+      "language": "bn",
+      "text": "যদি আজ সিদ্ধান্ত না হয়, আমি কি লিখিতভাবে জানতে পারব কে আমাকে ফোন করবে?",
+      "partial_text": "যদি আজ সিদ্ধান্ত না হয়...",
+      "translated_text": "If there is no decision today, can I have in writing who will call me?",
+      "start_ms": 74000,
+      "end_ms": 81200,
+      "confidence": 0.95
+    },
+    {
+      "turn_id": "t-008",
+      "speaker": "caseworker",
+      "language": "en",
+      "text": "We will call the out-of-hours social work service tonight if accommodation is not arranged before closing, and I will send a written summary before you leave.",
+      "partial_text": "We will call the out-of-hours social work service tonight...",
+      "translated_text": "অফিস বন্ধ হওয়ার আগে থাকার ব্যবস্থা না হলে আমরা আজ রাতে আউট-অফ-আওয়ার্স সোশ্যাল ওয়ার্ক সার্ভিসে ফোন করব, এবং আপনি যাওয়ার আগে আমি লিখিত সারাংশ পাঠাব।",
+      "start_ms": 83400,
+      "end_ms": 93600,
+      "confidence": 0.98
     }
-  ]
+  ],
+  "policy_cards": [
+    {
+      "card_id": "policy-001",
+      "title": "Relief duty and interim accommodation",
+      "claim": "City of London guidance says it will provide interim accommodation during relief duty when there is reason to believe the person is homeless, eligible for housing assistance, and in priority need.",
+      "source_title": "Rights of people who are homeless",
+      "source_url": "https://www.cityoflondon.gov.uk/services/housing-and-homelessness/homelessness-or-at-risk/rights-of-people-who-are-homeless",
+      "source_span": "City of London rights page, section describing prevention and relief duties and interim accommodation during relief duty.",
+      "authority": "City of London Corporation",
+      "confidence": 0.86,
+      "trigger_turn_ids": ["t-001", "t-003"]
+    },
+    {
+      "card_id": "policy-002",
+      "title": "Child in household and priority need",
+      "claim": "The national Homelessness Code of Guidance identifies priority need as relevant to whether interim accommodation must be secured while inquiries continue.",
+      "source_title": "Homelessness code of guidance for local authorities - Chapter 8: Priority need",
+      "source_url": "https://www.gov.uk/guidance/homelessness-code-of-guidance-for-local-authorities/chapter-8-priority-need",
+      "source_span": "Chapter 8.3 explains the section 188 interim accommodation duty where there is reason to believe the applicant may be homeless, eligible, and in priority need.",
+      "authority": "Department for Levelling Up, Housing and Communities",
+      "confidence": 0.82,
+      "trigger_turn_ids": ["t-003"]
+    },
+    {
+      "card_id": "policy-003",
+      "title": "Emergency out-of-hours contact",
+      "claim": "City of London housing guidance directs people with emergency health or care needs outside normal hours to seek assistance through the Emergency Out of Hours Social Work Service.",
+      "source_title": "Help with housing difficulties or homelessness",
+      "source_url": "https://www.cityoflondon.gov.uk/services/housing-and-homelessness/homelessness-or-at-risk/help-with-housing-difficulties-or-homelessness",
+      "source_span": "City help page, emergency outside normal working hours section.",
+      "authority": "City of London Corporation",
+      "confidence": 0.78,
+      "trigger_turn_ids": ["t-008"]
+    }
+  ],
+  "question_prompts": [
+    {
+      "prompt_id": "housing-tonight",
+      "language": "bn",
+      "text": "আপনার পরিস্থিতি দেখা পর্যন্ত আজ রাতে নিরাপদে থাকার কী ব্যবস্থা আছে তা জিজ্ঞেস করুন।",
+      "english_text": "Ask what safe option is available for tonight while they review your situation.",
+      "trigger_turn_ids": ["t-001", "t-003"]
+    },
+    {
+      "prompt_id": "housing-documents",
+      "language": "bn",
+      "text": "আজ কোন কাগজ দরকার এবং বাকি প্রমাণ পরে পাঠানো যাবে কি না জিজ্ঞেস করুন।",
+      "english_text": "Ask which documents they need today and whether you can send missing evidence later.",
+      "trigger_turn_ids": ["t-005"]
+    },
+    {
+      "prompt_id": "housing-contact-details",
+      "language": "bn",
+      "text": "পরের যোগাযোগ কে করবে, কখন করবে এবং কোন ফোন বা ইমেইল ব্যবহার করবে তা জিজ্ঞেস করুন।",
+      "english_text": "Ask who will contact you next, when, and what number or email they will use.",
+      "trigger_turn_ids": ["t-007", "t-008"]
+    }
+  ],
+  "commitments": [
+    {
+      "commitment_id": "commitment-001",
+      "owner": "caseworker",
+      "text": "Record that a child is present and assess emergency accommodation immediately.",
+      "due": "tonight",
+      "trigger_turn_ids": ["t-004"]
+    },
+    {
+      "commitment_id": "commitment-002",
+      "owner": "caseworker",
+      "text": "Provide an email address and write down which evidence is still missing.",
+      "due": "before the resident leaves",
+      "trigger_turn_ids": ["t-006"]
+    },
+    {
+      "commitment_id": "commitment-003",
+      "owner": "caseworker",
+      "text": "Call the out-of-hours social work service tonight if accommodation is not arranged before closing and send a written summary.",
+      "due": "tonight",
+      "trigger_turn_ids": ["t-008"]
+    }
+  ],
+  "fallback_path": {
+    "trigger": "Network is disabled or a live provider is unavailable.",
+    "operator_line": "Switching Bridge to deterministic local mode. The same event log keeps running from the fixture; no cloud claim is made unless ALLOW_CLOUD=true.",
+    "steps": [
+      "Show provider status changing to demo/local.",
+      "Replay t-005 through t-008 from this fixture with no network dependency.",
+      "Generate the record from accumulated final_utterance, policy_card, question_prompt, and commitment events.",
+      "Open the HTML record and point to source metadata attached to each policy claim."
+    ]
+  },
+  "record": {
+    "record_id": "demo-001-record",
+    "summary": "Resident reported being asked to leave tonight, having a six-year-old child with them, and lacking a safe family option. Bridge captured cited policy cards, resident prompts, and caseworker commitments about emergency accommodation, documents, and written follow-up.",
+    "expected_sections": [
+      "session summary",
+      "participants",
+      "bilingual transcript",
+      "policy citations",
+      "question prompts",
+      "commitments",
+      "next steps",
+      "safety disclaimer"
+    ],
+    "safety_line": "Bridge does not replace legal advice, clinical judgement, or a qualified interpreter for legally binding decisions."
+  }
 }
-

@@ -2,20 +2,36 @@ services:
   api:
     build:
       context: ./services/api
-    env_file:
-      - .env
+    environment:
+      BRIDGE_MODE: ${BRIDGE_MODE:-demo}
+      ASR_PROVIDER: ${ASR_PROVIDER:-demo}
+      TTS_PROVIDER: ${TTS_PROVIDER:-demo}
+      LLM_PROVIDER: ${LLM_PROVIDER:-demo}
+      RAG_PROVIDER: ${RAG_PROVIDER:-local}
+      ALLOW_CLOUD: ${ALLOW_CLOUD:-false}
+      BRIDGE_DATA_DIR: /app/data
+      BRIDGE_DEMO_SCENARIO: ${BRIDGE_DEMO_SCENARIO:-fixtures/demo_scenario.json}
+      BRIDGE_DEMO_STEP_MS: ${BRIDGE_DEMO_STEP_MS:-250}
+      BRIDGE_RECORD_OUTPUT_DIR: ${BRIDGE_RECORD_OUTPUT_DIR:-/tmp/bridge-records/generated}
     ports:
-      - "8080:8080"
+      - "${API_PORT:-8080}:8080"
     volumes:
       - ./data:/app/data:ro
+
   web:
     image: node:22-bookworm
     working_dir: /app
-    command: sh -lc "npm install && npm run dev -- --host 0.0.0.0"
+    command: sh -lc "npm install --no-audit --no-fund && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - api
+    environment:
+      VITE_API_WS_URL: ${VITE_API_WS_URL:-ws://localhost:8080/ws/session/demo-001}
+      VITE_ALLOW_CLOUD: ${ALLOW_CLOUD:-false}
     ports:
-      - "5173:5173"
+      - "${WEB_PORT:-5173}:5173"
     volumes:
       - ./apps/web:/app
-    environment:
-      - VITE_API_WS_URL=ws://localhost:8080/ws/session/demo-001
+      - bridge-web-node-modules:/app/node_modules
 
+volumes:
+  bridge-web-node-modules:

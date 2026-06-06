@@ -23,6 +23,9 @@ Recommended branches:
 - `agent/question-record`
 - `agent/integration`
 
+Before handing work to `agent/integration`, also read
+[docs/integration-runbook.md](integration-runbook.md).
+
 ## File Ownership
 
 Use these ownership boundaries to avoid conflicts:
@@ -43,6 +46,10 @@ to event names, required fields, or session semantics must be proposed in the
 integration branch first.
 
 Agents may add optional fields if the existing consumers keep working.
+
+`agent/integration` has landed additive lifecycle and commitment events to match
+the implementation plan. Do not remove or rename existing event names or
+required fields; keep `BRIDGE_MODE=demo` green after optional additions.
 
 ## Commit Rule
 
@@ -79,4 +86,3 @@ must not break deterministic demo mode.
 If an agent enables a cloud provider, it must be guarded by `ALLOW_CLOUD=true`
 and visually labelled in the UI. The offline demo path must keep working with
 `ALLOW_CLOUD=false`.
-

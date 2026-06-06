@@ -6,6 +6,14 @@ sources:
     domain: impact
     authority: "Greater London Authority"
     priority: p0
+    status: verified_2026_06_06
+    resources:
+      - title: "English Proficiency.xlsx"
+        type: xlsx
+        url: "https://data.london.gov.uk/download/vqlo7/e3fbbfd7-7b34-4b24-b248-5f3b1179c995/English%20Proficiency.xlsx"
+    local_seed_text: |
+      The London Datastore Census 2021 language table is the working impact source for English proficiency by London geography.
+      Current demo language must stay cautious: around 350,000 Londoners cannot speak English well or at all, pending final spreadsheet refresh.
   - id: london_homelessness_provision
     title: "Homelessness Provision, Borough"
     type: dataset
@@ -13,6 +21,14 @@ sources:
     domain: housing
     authority: "Greater London Authority"
     priority: p0
+    status: verified_2026_06_06
+    resources:
+      - title: "Homelessness.xlsx"
+        type: xlsx
+        url: "https://data.london.gov.uk/download/24805/504a5602-d74f-4303-a926-101000da1d59/Homelessness.xlsx"
+    local_seed_text: |
+      The London Datastore homelessness provision dataset records local authority homelessness provision by borough.
+      Use it for borough-level context only; do not turn dataset rows into eligibility advice without a policy source.
   - id: city_homelessness_at_risk
     title: "Homeless, rough sleeping or at risk"
     type: html
@@ -20,6 +36,10 @@ sources:
     domain: housing
     authority: "City of London"
     priority: p0
+    status: verified_2026_06_06
+    local_seed_text: |
+      The City of London homelessness landing page routes residents who are threatened with homelessness, rough sleeping, or seeking housing difficulty help.
+      It links to rights, prevention, rough sleeping, and help with housing difficulty pages.
   - id: city_homeless_rights
     title: "Rights of people who are homeless"
     type: html
@@ -27,6 +47,12 @@ sources:
     domain: housing
     authority: "City of London"
     priority: p0
+    status: verified_2026_06_06
+    local_seed_text: |
+      City of London says local authorities have duties to people who are homeless or threatened with homelessness within 56 days.
+      After a homeless application, City of London assesses homelessness, eligibility, prevention duty, relief duty, and priority need for emergency interim accommodation.
+      During relief duty, City of London can provide emergency interim accommodation where there is reason to believe the applicant is homeless, eligible, and in priority need.
+      City of London says applicants will be notified of homelessness decisions in writing.
   - id: city_preventing_homelessness
     title: "Preventing homelessness"
     type: html
@@ -34,6 +60,12 @@ sources:
     domain: housing
     authority: "City of London"
     priority: p0
+    status: verified_2026_06_06
+    local_seed_text: |
+      City of London says people at risk of homelessness can ask for free housing options advice.
+      If someone is threatened with homelessness within 56 days or already homeless, City of London considers prevention or relief duties after assessment.
+      A personalised housing plan may include negotiation, mediation, rent arrears support, legal advice, or rent deposit options.
+      Domestic abuse emergencies should be treated as emergencies; the page points to 999 and domestic abuse support routes.
   - id: newham_homelessness_advice
     title: "Homelessness prevention and advice"
     type: html
@@ -41,6 +73,11 @@ sources:
     domain: housing
     authority: "Newham"
     priority: p1
+    status: verified_2026_06_06
+    local_seed_text: |
+      Newham says homelessness may be prevented by helping someone stay where they are or helping them move somewhere else.
+      Newham's Homeless Prevention and Advice Service may produce a personal housing plan, mediate, negotiate rent, advise on occupation rights, and assess housing duty.
+      Newham says residents with an open homelessness application should use the homelessness enquiry route rather than starting a new application.
   - id: newham_allocations
     title: "Apply for council housing"
     type: html
@@ -48,11 +85,20 @@ sources:
     domain: housing
     authority: "Newham"
     priority: p1
+    status: verified_2026_06_06
+    local_seed_text: |
+      Newham says applicants usually must be at least 18, live continuously in Newham for three years or meet local connection rules, and have no existing open application.
+      Newham lists exceptions to residency conditions, including some homeless duty, domestic abuse, forces, and nominated scheme situations.
+      Newham says people subject to immigration control without qualifying status cannot join the housing register.
   - id: newham_allocation_scheme_pdf
     title: "London Borough of Newham Housing Allocation Scheme"
     type: pdf
-    url: "https://www.newham.gov.uk/downloads/file/839/housing-allocation-policy"
+    url: "https://www.newham.gov.uk/downloads/file/9713/housing-allocation-policy-04-09-2025-v3-0-1"
     domain: housing
     authority: "Newham"
     priority: p1
-
+    status: verified_2026_06_06
+    local_seed_text: |
+      Newham's allocation scheme says only households on the housing register are considered for housing.
+      The scheme explains who can join, how housing application decisions are made, and how priority is decided between applicants.
+      It says applicants have review rights for some decisions and must request review within the policy deadline.

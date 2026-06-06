@@ -7,18 +7,20 @@ ZGX Nano AI Station, London open data, and measurable public-service impact.
 
 ## Current Status
 
-This repository is at architecture scaffold stage. It contains:
+This repository is at deterministic demo integration stage. It contains:
 
 - the product specification
 - the implementation handoff plan
 - branch and parallel-agent workflow rules
 - backend/frontend/data scaffolding
-- shared event contracts for the four agents
+- shared event contracts for the four agents and session lifecycle
+- an agent-orchestrated demo event stream for `BRIDGE_MODE=demo`
+- a browser UI that consumes the event stream over WebSocket
 - curated source registry placeholders
 
-The first working target is deterministic demo mode. Live audio, local model
-serving, and ElevenLabs integrations should be layered on top of the same event
-contracts.
+`BRIDGE_MODE=demo` is the primary integration safety rail. Live audio, local
+model serving, RAG indexes, and ElevenLabs integrations must be layered on top
+of the same event contracts without breaking the deterministic fixture path.
 
 ## Core Demo
 
@@ -30,6 +32,106 @@ The Sunday demo should show:
 4. a conservative resident question prompt
 5. an offline/local proof
 6. a one-tap bilingual record with citations
+
+## Quick Start
+
+Copy the default local configuration:
+
+```bash
+cp .env.example .env
+```
+
+Run the full demo stack:
+
+```bash
+docker compose up --build
+```
+
+Open the web client at `http://localhost:5173`. The API is available at
+`http://localhost:8080`, and the default WebSocket stream is
+`ws://localhost:8080/ws/session/demo-001`.
+
+Run the deterministic event stream without Docker:
+
+```bash
+python3 scripts/run_demo_mode.py --session-id demo-001
+```
+
+Record endpoints are generated from the same event log:
+
+```bash
+curl http://localhost:8080/session/demo-001/record.json
+open http://localhost:8080/session/demo-001/record.html
+```
+
+Run the API locally:
+
+```bash
+cd services/api
+python3 -m pip install -e ".[dev]"
+uvicorn bridge.main:app --reload --host 0.0.0.0 --port 8080
+```
+
+Run the web client locally:
+
+```bash
+cd apps/web
+npm install
+npm run dev -- --host 0.0.0.0
+```
+
+## Runtime Modes
+
+Demo mode must remain deterministic and cloud-free:
+
+```env
+BRIDGE_MODE=demo
+ASR_PROVIDER=demo
+TTS_PROVIDER=demo
+LLM_PROVIDER=demo
+RAG_PROVIDER=local
+ALLOW_CLOUD=false
+```
+
+Use `BRIDGE_MODE=hybrid` or `BRIDGE_MODE=live` only after the feature is present
+and its official activation/discovery flow has been checked. Cloud providers
+must stay guarded by `ALLOW_CLOUD=true`, and the UI/pitch must not claim local
+sovereignty in that mode.
+
+## Event Contract
+
+`services/api/bridge/bus/events.py` is the shared contract. The integration
+branch keeps existing event names and required fields stable. The current
+contract includes additive session lifecycle, transcript, translation, policy,
+question, commitment, record, and agent-status events so each parallel branch
+can work against the same stream.
+
+No existing required event fields were removed or renamed in the integration
+demo pass. Add optional fields only when existing demo consumers keep working.
+
+## Verification
+
+Backend contract and demo tests:
+
+```bash
+cd services/api
+python3 -m pytest
+```
+
+Frontend type/build check:
+
+```bash
+cd apps/web
+npm run build
+```
+
+API health and event stream:
+
+```bash
+curl http://localhost:8080/health
+curl http://localhost:8080/session/demo-001/events
+curl http://localhost:8080/session/demo-001/record.json
+```
 
 ## Repo Layout
 
@@ -68,3 +170,5 @@ based on a London Datastore Census 2021 excerpt showing 303,000 "not well" and
 No runtime demo should claim "nothing leaves the box" unless `ALLOW_CLOUD=false`
 and the selected ASR, TTS, LLM, and RAG providers are all local.
 
+Policy and data facts shown in the pitch must be re-verified against official
+sources before judging. Demo fixtures should stay conservative and cited.

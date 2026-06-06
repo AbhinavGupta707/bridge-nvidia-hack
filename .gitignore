@@ -4,6 +4,7 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+*.egg-info/
 .venv/
 venv/
 
@@ -20,6 +21,8 @@ dist/
 data/sources/raw/
 data/processed/
 data/indexes/
+data/records/
+services/api/bridge/records/generated/
 *.sqlite
 *.db
 
@@ -27,4 +30,3 @@ data/indexes/
 .DS_Store
 .idea/
 .vscode/
-

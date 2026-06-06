@@ -1,4 +1,9 @@
-from bridge.bus.events import AgentStatusEvent, PolicyCardEvent
+from bridge.bus.events import (
+    AgentStatusEvent,
+    PartialTranscriptEvent,
+    PolicyCardEvent,
+    TranslationEvent,
+)
 
 
 def test_agent_status_event_type_defaults() -> None:
@@ -28,3 +33,29 @@ def test_policy_card_requires_citation_metadata() -> None:
     assert event.source_url.startswith("https://")
     assert event.trigger_turn_ids == ["t-001"]
 
+
+def test_partial_transcript_event_type_defaults() -> None:
+    event = PartialTranscriptEvent(
+        session_id="demo-001",
+        turn_id="t-001",
+        speaker="resident",
+        language="bn",
+        text="partial text",
+        stability=0.7,
+    )
+
+    assert event.type == "partial_transcript"
+
+
+def test_translation_event_type_defaults() -> None:
+    event = TranslationEvent(
+        session_id="demo-001",
+        turn_id="t-001",
+        speaker="resident",
+        source_language="bn",
+        target_language="en",
+        source_text="source",
+        translated_text="translated",
+    )
+
+    assert event.type == "translation"
