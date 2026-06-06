@@ -1,0 +1,22 @@
+{
+  "session_id": "demo-001",
+  "scenario": "Housing options interview",
+  "resident_language": "bn",
+  "turns": [
+    {
+      "turn_id": "t-001",
+      "speaker": "resident",
+      "language": "bn",
+      "text": "Demo Bengali resident utterance placeholder.",
+      "translated_text": "I have been told to leave where I am staying and I do not know where I can sleep tonight."
+    },
+    {
+      "turn_id": "t-002",
+      "speaker": "caseworker",
+      "language": "en",
+      "text": "I need to understand whether you are homeless or threatened with homelessness.",
+      "translated_text": "Demo Bengali translation placeholder."
+    }
+  ]
+}
+

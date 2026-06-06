@@ -1,0 +1,58 @@
+sources:
+  - id: london_census_2021_language
+    title: "2021 Census wards ethnicity language identity religion"
+    type: dataset
+    url: "https://data.london.gov.uk/dataset/2021-census-wards-ethnicity-language-identity-religion/"
+    domain: impact
+    authority: "Greater London Authority"
+    priority: p0
+  - id: london_homelessness_provision
+    title: "Homelessness Provision, Borough"
+    type: dataset
+    url: "https://data.london.gov.uk/dataset/homelessness"
+    domain: housing
+    authority: "Greater London Authority"
+    priority: p0
+  - id: city_homelessness_at_risk
+    title: "Homeless, rough sleeping or at risk"
+    type: html
+    url: "https://www.cityoflondon.gov.uk/services/housing-and-homelessness/homelessness-or-at-risk"
+    domain: housing
+    authority: "City of London"
+    priority: p0
+  - id: city_homeless_rights
+    title: "Rights of people who are homeless"
+    type: html
+    url: "https://www.cityoflondon.gov.uk/services/housing-and-homelessness/homelessness-or-at-risk/rights-of-people-who-are-homeless"
+    domain: housing
+    authority: "City of London"
+    priority: p0
+  - id: city_preventing_homelessness
+    title: "Preventing homelessness"
+    type: html
+    url: "https://www.cityoflondon.gov.uk/services/housing-and-homelessness/homelessness-or-at-risk/preventing-homelessness"
+    domain: housing
+    authority: "City of London"
+    priority: p0
+  - id: newham_homelessness_advice
+    title: "Homelessness prevention and advice"
+    type: html
+    url: "https://www.newham.gov.uk/housing-homes-homelessness/homelessness-prevention-advice/1"
+    domain: housing
+    authority: "Newham"
+    priority: p1
+  - id: newham_allocations
+    title: "Apply for council housing"
+    type: html
+    url: "https://www.newham.gov.uk/housing-homes-homelessness/apply-council-housing/1"
+    domain: housing
+    authority: "Newham"
+    priority: p1
+  - id: newham_allocation_scheme_pdf
+    title: "London Borough of Newham Housing Allocation Scheme"
+    type: pdf
+    url: "https://www.newham.gov.uk/downloads/file/839/housing-allocation-policy"
+    domain: housing
+    authority: "Newham"
+    priority: p1
+

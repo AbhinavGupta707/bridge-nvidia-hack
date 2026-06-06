@@ -1,0 +1,21 @@
+services:
+  api:
+    build:
+      context: ./services/api
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data:ro
+  web:
+    image: node:22-bookworm
+    working_dir: /app
+    command: sh -lc "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./apps/web:/app
+    environment:
+      - VITE_API_WS_URL=ws://localhost:8080/ws/session/demo-001
+
