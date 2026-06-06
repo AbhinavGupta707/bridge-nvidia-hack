@@ -1,81 +1,92 @@
 # Bridge
 
-Bridge is a local-first, multi-agent public-service appointment assistant for
-Londoners with limited English proficiency. It is designed for the NVIDIA Hack
-for Impact London brief: open models, local edge deployment on DGX Spark or HP
-ZGX Nano AI Station, London open data, and measurable public-service impact.
+Bridge is a local-first AI assistant for public-service appointments.
+
+It helps a caseworker and a resident who do not share the same language have a
+clearer, fairer appointment. During a housing or homelessness conversation,
+Bridge can translate the discussion, surface relevant policy cards, suggest
+useful follow-up questions, and produce a bilingual record at the end.
+
+The project was built for the NVIDIA Hack for Impact London challenge:
+
+- open models
+- local edge deployment on DGX Spark or HP ZGX Nano AI Station
+- City of London / London open data
+- public-service impact
+
+## Why It Matters
+
+Many Londoners struggle to access essential services because language, process,
+and policy complexity get in the way. Bridge is designed to support both sides
+of a public-service appointment:
+
+- residents get clearer interpretation and prompts for questions they may not
+  know to ask
+- caseworkers get cited policy context and a structured appointment record
+- sensitive conversations can be run in a local/offline mode where supported by
+  the selected providers
+
+## What The Demo Shows
+
+The current demo focuses on a Bengali-speaking resident at risk of homelessness.
+
+Bridge shows four cooperating agents:
+
+- Interpreter Agent: turns speech or fixture text into bilingual transcript
+- Policy Agent: retrieves cited housing and homelessness policy cards
+- Question Agent: suggests conservative resident-led questions
+- Record Agent: creates a bilingual JSON/HTML appointment record
+
+The deterministic demo works without the NVIDIA hardware. Live local models can
+be activated later on the DGX Spark / ZGX Nano using the same event contracts.
 
 ## Current Status
 
-This repository is at deterministic demo integration stage. It contains:
+This repository currently includes:
 
-- the product specification
-- the implementation handoff plan
-- branch and parallel-agent workflow rules
-- backend/frontend/data scaffolding
-- shared event contracts for the four agents and session lifecycle
-- an agent-orchestrated demo event stream for `BRIDGE_MODE=demo`
-- a browser UI that consumes the event stream over WebSocket
-- a typed manual rehearsal path that runs Policy, Question, and Record agents
-  without live audio hardware
-- curated source registry placeholders
+- FastAPI backend with shared event stream contracts
+- React/Vite web appointment UI
+- deterministic demo mode for reliable rehearsal
+- typed manual rehearsal mode for testing without microphones or hardware
+- local policy/RAG corpus scaffolding and cited policy cards
+- record generation as JSON and HTML
+- offline validation and model smoke-check scripts
+- runbooks for parallel agents, hardware activation, and pre-hardware work
 
-`BRIDGE_MODE=demo` is the primary integration safety rail. Live audio, local
-model serving, RAG indexes, and ElevenLabs integrations must be layered on top
-of the same event contracts without breaking the deterministic fixture path.
+The main safety rail is:
 
-## Core Demo
+```env
+BRIDGE_MODE=demo
+ALLOW_CLOUD=false
+```
 
-The Sunday demo should show:
+Do not claim "nothing leaves the box" unless `ALLOW_CLOUD=false` and the
+selected ASR, TTS, LLM, embedding, and RAG providers are all local or demo
+fixtures.
 
-1. a bilingual housing/homelessness appointment
-2. live Interpreter, Policy, Question, and Record agent activity
-3. a cited policy card grounded in local corpus data
-4. a conservative resident question prompt
-5. an offline/local proof
-6. a one-tap bilingual record with citations
+## Run Locally
 
-## Quick Start
-
-Copy the default local configuration:
+Copy the default environment:
 
 ```bash
 cp .env.example .env
 ```
 
-Run the full demo stack:
+Run the full stack with Docker:
 
 ```bash
 docker compose up --build
 ```
 
-Open the web client at `http://localhost:5173`. The API is available at
-`http://localhost:8080`, and the default WebSocket stream is
-`ws://localhost:8080/ws/session/demo-001`.
+Open:
 
-Run the deterministic event stream without Docker:
+- web app: `http://localhost:5173`
+- API: `http://localhost:8080`
+- WebSocket stream: `ws://localhost:8080/ws/session/demo-001`
 
-```bash
-python3 scripts/run_demo_mode.py --session-id demo-001
-```
+## Run Without Docker
 
-Record endpoints are generated from the same event log:
-
-```bash
-curl http://localhost:8080/session/demo-001/record.json
-open http://localhost:8080/session/demo-001/record.html
-```
-
-Run a typed rehearsal without microphones or NVIDIA hardware:
-
-```bash
-curl -X POST http://localhost:8080/session/manual-001/manual_utterance \
-  -H 'Content-Type: application/json' \
-  -d '{"speaker":"resident","language":"en","text":"I am homeless tonight and need emergency accommodation.","resident_language":"bn"}'
-curl http://localhost:8080/session/manual-001/record.json
-```
-
-Run the API locally:
+Start the API:
 
 ```bash
 cd services/api
@@ -83,7 +94,7 @@ python3 -m pip install -e ".[dev]"
 uvicorn bridge.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
-Run the web client locally:
+Start the web app:
 
 ```bash
 cd apps/web
@@ -91,100 +102,96 @@ npm install
 npm run dev -- --host 0.0.0.0
 ```
 
-## Runtime Modes
+## Try The Demo Stream
 
-Demo mode must remain deterministic and cloud-free:
+Print the deterministic event stream:
 
-```env
-BRIDGE_MODE=demo
-ASR_PROVIDER=demo
-TTS_PROVIDER=demo
-LLM_PROVIDER=demo
-RAG_PROVIDER=local
-ALLOW_CLOUD=false
+```bash
+python3 scripts/run_demo_mode.py --session-id demo-001
 ```
 
-Use `BRIDGE_MODE=hybrid` or `BRIDGE_MODE=live` only after the feature is present
-and its official activation/discovery flow has been checked. Cloud providers
-must stay guarded by `ALLOW_CLOUD=true`, and the UI/pitch must not claim local
-sovereignty in that mode.
+Fetch the generated appointment record:
 
-## Event Contract
+```bash
+curl http://localhost:8080/session/demo-001/record.json
+open http://localhost:8080/session/demo-001/record.html
+```
 
-`services/api/bridge/bus/events.py` is the shared contract. The integration
-branch keeps existing event names and required fields stable. The current
-contract includes additive session lifecycle, transcript, translation, policy,
-question, commitment, record, and agent-status events so each parallel branch
-can work against the same stream.
+## Try Manual Rehearsal
 
-No existing required event fields were removed or renamed in the integration
-demo pass. Add optional fields only when existing demo consumers keep working.
+Manual rehearsal lets you type a turn and run it through the Policy, Question,
+and Record agents without live audio or NVIDIA hardware.
+
+```bash
+curl -X POST http://localhost:8080/session/manual-001/manual_utterance \
+  -H 'Content-Type: application/json' \
+  -d '{"speaker":"resident","language":"en","text":"I am homeless tonight and need emergency accommodation.","resident_language":"bn"}'
+
+curl http://localhost:8080/session/manual-001/record.json
+```
+
+You can also use the Manual Rehearsal panel in the web app.
 
 ## Verification
 
-Backend contract and demo tests:
+Backend tests:
 
 ```bash
 cd services/api
 python3 -m pytest
 ```
 
-Frontend type/build check:
+Backend lint:
+
+```bash
+cd services/api
+python3 -m ruff check
+```
+
+Frontend build:
 
 ```bash
 cd apps/web
 npm run build
 ```
 
-API health and event stream:
+Offline validation:
 
 ```bash
-curl http://localhost:8080/health
-curl http://localhost:8080/session/demo-001/events
-curl http://localhost:8080/session/demo-001/record.json
+./scripts/validate_offline.sh
 ```
 
-Before the event hardware arrives, use
-[docs/pre-hardware-checklist.md](docs/pre-hardware-checklist.md) to complete
-all non-hardware work and keep tomorrow's pass focused on provider activation,
-local model residency, and latency proof.
+On a normal laptop this may warn that NVIDIA runtime, Ollama, or NIM are not
+available. That is expected before the event hardware arrives.
 
-## Repo Layout
+## Hardware Activation
+
+The product can be developed and rehearsed without the DGX Spark / ZGX Nano.
+The hardware is required for:
+
+- NVIDIA runtime proof with `nvidia-smi`
+- local model residency and performance checks
+- Ollama or NIM model activation
+- local ASR/TTS latency checks
+- verified offline/local claims with the final selected providers
+
+See:
+
+- [docs/pre-hardware-checklist.md](docs/pre-hardware-checklist.md)
+- [docs/model-runtime.md](docs/model-runtime.md)
+- [docs/integration-runbook.md](docs/integration-runbook.md)
+
+## Repository Layout
 
 ```text
-apps/web/                 Browser client
-services/api/             FastAPI backend and agent bus
-data/                     Source registry, fixtures, processed corpus
-docs/                     Runbooks, data notes, branch workflow
-scripts/                  Ingest, model smoke, offline validation scripts
+apps/web/       React appointment UI
+services/api/   FastAPI backend, agents, events, and records
+data/           source registry, fixtures, and processed corpus output
+docs/           runbooks and implementation notes
+scripts/        ingestion, demo, smoke, and offline validation scripts
 ```
 
-## Parallel Work Rule
+## Data And Claims
 
-All parallel sessions must branch from `main` after the scaffold commit. Do not
-work directly on `main`.
-
-Use branch names:
-
-- `agent/infra-models`
-- `agent/voice-interpreter`
-- `agent/data-policy-rag`
-- `agent/frontend-ux`
-- `agent/question-record`
-- `agent/integration`
-
-Read [docs/parallel-agent-workflow.md](docs/parallel-agent-workflow.md) before
-starting a branch.
-
-## Data And Claim Hygiene
-
-The impact statistic must be re-verified before the pitch. Current working
-language is "around 350,000 Londoners cannot speak English well or at all",
-based on a London Datastore Census 2021 excerpt showing 303,000 "not well" and
-52,000 "not at all".
-
-No runtime demo should claim "nothing leaves the box" unless `ALLOW_CLOUD=false`
-and the selected ASR, TTS, LLM, and RAG providers are all local.
-
-Policy and data facts shown in the pitch must be re-verified against official
-sources before judging. Demo fixtures should stay conservative and cited.
+Policy cards and pitch claims should stay cited and conservative. Public demo
+facts should be re-verified against official sources before judging.
